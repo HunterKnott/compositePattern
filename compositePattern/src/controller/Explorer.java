@@ -52,14 +52,34 @@ public class Explorer {
 		}
 	}
 	
+	private static Folder buildFileSystem(BufferedReader reader) throws IOException {
+		Folder root = new Folder("root");
+		Stack<Folder> stack = new Stack<>();
+		stack.push(root);
+		String line;
+		while ((line = reader.readLine()) != null) {
+			int level = line.lastIndexOf(' ') / 3 + 1;
+			String name = line.trim();
+			Folder parent = stack.size() > level ? stack.get(level) : stack.peek();
+			Folder folder = new Folder(name);
+			parent.addComponent(folder);
+			if (stack.size() > level) {
+				while (stack.size() > level) {
+					stack.pop();
+				}
+			}
+			stack.push(folder);
+		}
+		return root;
+	}
+	
 	public static void main(String[] args) {
 		try {
-			System.out.println("Current working directory: " + System.getProperty("user.dir"));
 			FileInputStream fileInputStream = new FileInputStream("src/controller/directory.dat");
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-//			Folder root = buildFileSystem(bufferedReader);
-//			Explorer explorer = new Explorer(root);
-//			explorer.process(new BufferedReader(new InputStreamReader(System.in)));
+			Folder root = buildFileSystem(bufferedReader);
+			Explorer explorer = new Explorer(root);
+			explorer.process(new BufferedReader(new InputStreamReader(System.in)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
