@@ -20,6 +20,7 @@ public class Explorer {
 		
 		while ((line = reader.readLine()) != null) {
 			int currentDepth = countSpaces(line) / INDENT.length();
+			System.out.println(line);
 			
 			if (currentDepth == 0) {
 				root = new Folder(line, null);
@@ -31,25 +32,27 @@ public class Explorer {
 				Folder newFolder = new Folder(line, current);
 				current.addComponent(newFolder);
 				current = newFolder;
-				depth = currentDepth;
+				depth++;
 			} else if (currentDepth > depth && !line.endsWith(":")) {
 				current.addComponent(new FileComponent(line));
 			} else if (currentDepth > depth && line.endsWith(":")) {
 				Folder newFolder = new Folder(line, current);
+				current.addComponent(newFolder);
 				current = newFolder;
-				depth = currentDepth;
+				depth++;
 			} else if (currentDepth < depth && !line.endsWith(":")) {
 				for (int i = depth - currentDepth; i > 0; i--) {
 					current = current.getParent();
 				}
 				current.addComponent(new FileComponent(line));
+				depth--;
 			} else if (currentDepth < depth && line.endsWith(":")) {
 				for (int i = depth - currentDepth; i > 0; i--) {
 					current = current.getParent();
 				}
 				Folder newFolder = new Folder(line, current);
 				current = newFolder;
-				depth = currentDepth;
+				depth--;
 			}
 		}
 		return root;
