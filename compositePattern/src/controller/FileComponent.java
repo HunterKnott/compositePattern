@@ -34,8 +34,8 @@ public class FileComponent implements DirectoryComponent {
 	}
 	
 	@Override
-	public void up() {
-		// Do nothing
+	public Folder up() {
+		return this.getParent();
 	}
 	
 	@Override

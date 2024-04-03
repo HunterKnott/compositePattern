@@ -20,7 +20,6 @@ public class Explorer {
 		
 		while ((line = reader.readLine()) != null) {
 			int currentDepth = countSpaces(line) / INDENT.length();
-			System.out.println(line);
 			
 			if (currentDepth == 0) {
 				root = new Folder(line, null);
@@ -89,13 +88,11 @@ public class Explorer {
 					}
 					else {
 						current = current.chdir(parts[1]);
-						if (current == null) {
-							System.out.println("Directory does not exist");
-						}
 					}
 					break;
 				case "up":
-					current = current.getParent();
+//					current = current.getParent();
+					current = current.up();
 					break;
 				case "count":
 					System.out.println(current.count());

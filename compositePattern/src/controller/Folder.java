@@ -43,7 +43,7 @@ public class Folder implements DirectoryComponent {
 			}
 		}
 		System.out.println("Directory does not exist");
-		return null;
+		return (Folder) this;
 	}
 	
 	@Override
@@ -52,11 +52,12 @@ public class Folder implements DirectoryComponent {
 	}
 	
     @Override
-    public void up() {
+    public Folder up() {
         if (parent != null) {
-            parent.chdir(name);
+            return parent;
         } else {
             System.out.println("Already at the root directory");
+            return this;
         }
     }
     
@@ -75,7 +76,7 @@ public class Folder implements DirectoryComponent {
 	public int countAll() {
 		int count = 0;
 		for (DirectoryComponent component : components) {
-			if (component instanceof Folder) {
+			if (component instanceof FileComponent) {
 				count ++;
 			} else {
 				count += ((Folder) component).countAll();
