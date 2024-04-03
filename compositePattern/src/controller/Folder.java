@@ -38,7 +38,7 @@ public class Folder implements DirectoryComponent {
 	@Override
 	public Folder chdir(String name) {
 		for (DirectoryComponent component : components) {
-			if (component instanceof Folder && component.getName().equals(name)) {
+			if (component instanceof Folder && component.getName().trim().replace(":", "").equals(name)) {
 				return (Folder) component;
 			}
 		}

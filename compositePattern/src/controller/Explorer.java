@@ -72,7 +72,7 @@ public class Explorer {
 	
 	public void process(BufferedReader reader) throws IOException {
 		while (true) {
-			System.out.print(current.getName() + "> ");
+			System.out.print(current.getName().trim().replace(":", "") + "> ");
 			String line = reader.readLine().trim();
 			String[] parts = line.split(" ");
 			String command = parts[0];
@@ -119,44 +119,5 @@ public class Explorer {
 		Folder root = buildFileTree(reader);
 		Explorer explorer = new Explorer(root);
 		explorer.process(new BufferedReader(new InputStreamReader(System.in)));
-//		explorer.process(new BufferedReader(new InputStreamReader(System.in)));
-//		try {
-//	        Scanner scanner = new Scanner(new File("src/controller/directory.dat"));
-//	        Folder root = readDirectory(scanner, 0);
-//	        Explorer explorer = new Explorer(root);
-////			FileInputStream fileInputStream = new FileInputStream("src/controller/directory.dat");
-////			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-//			String line;
-//			Folder current = null;
-//			while ((line = bufferedReader.readLine()) != null) {
-//				System.out.println(line);
-//				String[] parts = line.split("(?=:)");
-//				if (parts.length > 0) {
-//					String folderName = parts[0].trim();
-//					if (!folderName.isEmpty()) {
-//						current = new Folder(folderName);
-//						root.addComponent(current);
-//					}
-//				}
-//				if (parts.length > 1){
-//					String fileName = parts[1].trim();
-//					if (!fileName.isEmpty()) {
-//						FileComponent fileComp = new FileComponent(fileName);
-//						current.addComponent(fileComp);
-//					}
-//				}
-//			}
-//			
-//			Explorer explorer = new Explorer(root);
-//			explorer.process(new BufferedReader(new InputStreamReader(System.in)));
-//			
-////			FileInputStream fileInputStream = new FileInputStream("src/controller/directory.dat");
-////			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-////			Folder root = buildFileSystem(bufferedReader);
-////			Explorer explorer = new Explorer(root);
-////			explorer.process(new BufferedReader(new InputStreamReader(System.in)));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 }
