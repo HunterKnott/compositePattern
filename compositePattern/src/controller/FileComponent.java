@@ -8,23 +8,34 @@ public class FileComponent implements DirectoryComponent {
 	}
 	
 	@Override
+	public String getName() {
+		return name;
+	}
+	
+	@Override
 	public void list() {
-		System.out.println(name + " ");
+		System.out.println(getName());
 	}
 	
 	@Override
-	public void listAll() {
-		System.out.println(name);
+	public void listAll(String currentIndent) {
+		System.out.println(currentIndent + name);
 	}
 	
 	@Override
-	public void chdir(String name) {
+	public Folder chdir(String name) {
 		System.out.println("Not in a directory");
+		return null;
+	}
+	
+	@Override
+	public Folder getParent() {
+		throw new UnsupportedOperationException("File does not have a parent directory");
 	}
 	
 	@Override
 	public void up() {
-		System.out.println("up");
+		// Do nothing
 	}
 	
 	@Override

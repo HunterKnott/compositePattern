@@ -4,64 +4,67 @@ import java.util.List;
 
 public class Folder implements DirectoryComponent {
 	private String name;
-	private DirectoryComponent parent;
+	private Folder parent;
 	private List<DirectoryComponent> components;
 	
-	public Folder(String name) {
+	public Folder(String name, Folder parent) {
 		this.name = name;
-		this.parent = null;
-		this.components = new ArrayList<>();
-	}
-	
-	public void setParent(DirectoryComponent parent) {
 		this.parent = parent;
+		this.components = new ArrayList<>();
 	}
 	
 	public void addComponent(DirectoryComponent component) {
 		components.add(component);
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
 	
 	@Override
 	public void list() {
-		for (DirectoryComponent component : components) {
-			System.out.println(component + " ");
-		}
+		components.forEach(component -> System.out.print(component.getName().trim().replace(":", "") + "   "));
 		System.out.println();
 	}
 	
 	@Override
-	public void listAll() {
-		System.out.println(name + ":");
-		for (DirectoryComponent component : components) {
-			component.listAll();
-		}
-	}
+    public void listAll(String currentIndent) {
+		System.out.println(currentIndent + name);
+		String newIndent = currentIndent; // Indent of 3
+		components.forEach(component -> component.listAll(newIndent));
+    }
 	
 	@Override
-	public void chdir(String entry) {
+	public Folder chdir(String name) {
 		for (DirectoryComponent component : components) {
-			if (component instanceof Folder && ((Folder) component).name.equals(entry)) {
-				System.out.println(entry + ">");
-				return;
+			if (component instanceof Folder && component.getName().equals(name)) {
+				return (Folder) component;
 			}
 		}
 		System.out.println("Directory does not exist");
+		return null;
 	}
 	
 	@Override
-	public void up() {
-		System.out.println("up");
+	public Folder getParent() {
+		return parent;
 	}
 	
+    @Override
+    public void up() {
+        if (parent != null) {
+            parent.chdir(name);
+        } else {
+            System.out.println("Already at the root directory");
+        }
+    }
+    
 	@Override
 	public int count() {
 		int fileCount = 0;
 		for (DirectoryComponent component : components) {
-			if (!(component instanceof Folder)) {
+			if (component instanceof FileComponent) {
 				fileCount++;
 			}
 		}
@@ -70,9 +73,11 @@ public class Folder implements DirectoryComponent {
 	
 	@Override
 	public int countAll() {
-		int count = count();
+		int count = 0;
 		for (DirectoryComponent component : components) {
 			if (component instanceof Folder) {
+				count ++;
+			} else {
 				count += ((Folder) component).countAll();
 			}
 		}
