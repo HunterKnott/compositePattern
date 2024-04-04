@@ -30,8 +30,8 @@ public class Folder implements DirectoryComponent {
 	
 	@Override
     public void listAll(String currentIndent) {
-		System.out.println(currentIndent + name);
-		String newIndent = currentIndent; // Indent of 3
+		System.out.println(currentIndent + name.trim());
+		String newIndent = currentIndent + "   "; // Indent of 3
 		components.forEach(component -> component.listAll(newIndent));
     }
 	

@@ -19,7 +19,7 @@ public class FileComponent implements DirectoryComponent {
 	
 	@Override
 	public void listAll(String currentIndent) {
-		System.out.println(currentIndent + name);
+		System.out.println(currentIndent + name.trim());
 	}
 	
 	@Override

@@ -2,7 +2,6 @@
 
 package controller;
 import java.io.*;
-import java.util.*;
 
 public class Explorer {
 	private static final String INDENT = "   ";
@@ -70,8 +69,9 @@ public class Explorer {
 		}
 	
 	public void process(BufferedReader reader) throws IOException {
+		String path = current.getName().trim().replace(":", "");
 		while (true) {
-			System.out.print(current.getName().trim().replace(":", "") + "> ");
+			System.out.print(path + "> ");
 			String line = reader.readLine().trim();
 			String[] parts = line.split(" ");
 			String command = parts[0];
@@ -88,11 +88,16 @@ public class Explorer {
 					}
 					else {
 						current = current.chdir(parts[1]);
+						if (!path.substring(path.lastIndexOf("/") + 1).equals(current.getName().trim().replace(":", ""))) {
+							path += "/" + current.getName().trim().replace(":", "");
+						}
 					}
 					break;
 				case "up":
-//					current = current.getParent();
 					current = current.up();
+					if (path.contains("/")) {
+						path = path.substring(0, path.lastIndexOf("/"));
+					}
 					break;
 				case "count":
 					System.out.println(current.count());
