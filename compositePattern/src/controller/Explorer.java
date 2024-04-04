@@ -117,9 +117,17 @@ public class Explorer {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader("src/controller/directory.dat"));
+		String fileName = "directory.dat";
+		if (args.length > 0) {
+			fileName = args[0];
+		}
+		
+		InputStream inputStream = Explorer.class.getResourceAsStream(fileName);
+		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+		BufferedReader reader = new BufferedReader(inputStreamReader);
 		Folder root = buildFileTree(reader);
 		Explorer explorer = new Explorer(root);
 		explorer.process(new BufferedReader(new InputStreamReader(System.in)));
 	}
 }
+
